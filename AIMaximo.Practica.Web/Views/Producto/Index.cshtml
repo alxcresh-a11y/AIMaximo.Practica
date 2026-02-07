@@ -1,0 +1,98 @@
+﻿@model List<AIMaximo.Practica.Web.Models.Product>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+@* Plan (pseudocódigo detallado):
+   1. Mantener el título y la estructura principal.
+   2. Reorganizar la cabecera para que el botón "Nuevo Producto" y la barra de búsqueda estén alineados y se vean modernos.
+   3. Crear un formulario de búsqueda con:
+      - Un contenedor "input-group" de Bootstrap para agrupar icono, input y botones.
+      - Icono SVG de lupa al principio (estético y accesible).
+      - Input con clases "form-control", "rounded-pill" y "shadow-sm" para aspecto moderno.
+      - Botón "Buscar" con color primario y tamaño pequeño.
+      - Botón "Limpiar" (enlace) que redirige a la acción Index para quitar filtros.
+      - Añadir atributos ARIA para accesibilidad.
+   4. Mantener la tabla y las lógicas de visualización sin cambios.
+   5. Usar utilidades de Bootstrap (margen, paddings, sombras) para mejorar apariencia sin CSS adicional.
+*@
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+        <h2 class="m-0">Explorador de Productos</h2>
+
+        <div class="d-flex align-items-center mt-2 mt-md-0">
+            <form method="get" class="me-2" role="search" aria-label="Buscar productos">
+                <div class="input-group input-group-sm shadow-sm">
+                    <span class="input-group-text bg-white border-end-0" id="search-addon" style="border-top-left-radius:999px; border-bottom-left-radius:999px;">
+                        <!-- Icono lupa (SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search text-muted" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.106a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+                        </svg>
+                    </span>
+                    <input type="search"
+                           name="buscar"
+                           value="@ViewBag.Buscar"
+                           class="form-control rounded-pill border-start-0"
+                           placeholder="Buscar producto"
+                           aria-label="Buscar productos"
+                           aria-describedby="search-addon" />
+                    <button class="btn btn-primary btn-sm ms-2" type="submit" title="Buscar">
+                        Buscar
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-1" title="Limpiar búsqueda" role="button">
+                        Limpiar
+                    </a>
+                </div>
+            </form>
+
+            <a asp-action="Create" class="btn btn-success ms-2">Nuevo Producto</a>
+        </div>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">No hay productos para mostrar.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Clave Producto</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col" class="text-end">Precio</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td class="text-nowrap">@p.Id</td>
+                            <td>@p.Nombre</td>
+                            <td class="text-end">@String.Format("{0:C}", p.Precio)</td>
+                            <td>
+                                @if (p.Status)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
+                            </td>
+                            <td class="text-nowrap">
+                                <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-warning btn-sm me-1">Editar</a>
+                                <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

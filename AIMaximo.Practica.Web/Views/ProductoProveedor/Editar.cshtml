@@ -1,0 +1,30 @@
+﻿@model ProductoProveedor
+
+<h2>Editar Proveedor del Producto</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="IdProducto" />
+    <input type="hidden" asp-for="IdProveedor" />
+
+    <div class="mb-3">
+        <label>Proveedor</label>
+        <input asp-for="NombreProveedor" class="form-control" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label>Clave del Producto</label>
+        <input asp-for="ClaveProveedor" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Precio del Proveedor</label>
+        <input asp-for="PrecioProveedor" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary">Guardar</button>
+
+    <a class="btn btn-secondary ms-2"
+       href="/Producto/Edit/@Model.IdProducto">
+        Cancelar
+    </a>
+</form>

@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AIMaximo.Practica.Web.Models.Product
+@{
+ 
+
+    <h2>Nuevo Producto</h2>
+
+    <form method="post">
+
+        <label>Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+
+        <label>Precio</label>
+        <input asp-for="Precio" class="form-control" />
+
+        <label>Tipo</label>
+        <textarea asp-for="Descripcion" class="form-control"></textarea>
+
+        <label>Proveedor</label>
+        <select name="IdProveedor" class="form-control">
+            @foreach (var p in ViewBag.ListaProveedores)
+            {
+                <option value="@p.IdProveedor">@p.Nombre</option>
+            }
+        </select>
+
+        <label>Precio del proveedor</label>
+        <input asp-for="PrecioProveedor" class="form-control" />
+
+        <label>Clave del proveedor</label>
+        <input asp-for="ClaveProveedor" class="form-control" />
+
+        <br />
+
+        <button class="btn btn-success">Guardar</button>
+
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-1" title="Volver" role="button">
+            Volver
+        </a>
+
+    </form>
+
+
+
+}

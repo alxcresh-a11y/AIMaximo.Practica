@@ -1,0 +1,98 @@
+﻿@model AIMaximo.Practica.Web.Models.Product
+
+@{
+    ViewData["Title"] = "Producto";
+}
+
+@* 
+Plan en pseudocódigo (detallado):
+1. Crear un contenedor horizontal (flex) que alinee contenido verticalmente al centro.
+2. Poner el título en el lado izquierdo dentro del contenedor.
+3. Poner el botón "Volver" en el mismo contenedor y dejarlo alineado a la derecha usando `justify-content-between`.
+4. Añadir margen inferior para separar el encabezado del formulario.
+5. Mantener el resto de la página sin cambios para preservar funcionalidad.
+6. Usar clases de Bootstrap (`d-flex`, `justify-content-between`, `align-items-center`, `mb-3`) para implementación responsiva.
+*@
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Editar Producto</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm" title="Volver" role="button">
+        Volver
+    </a>
+</div>
+
+<form method="post">
+    <label>Clave </label>
+    <input asp-for="Id" readonly />
+    <br />
+
+    <label>Nombre</label>
+    <input asp-for="Nombre" class="form-control" />
+
+    <label>Precio</label>
+    <input asp-for="Precio" class="form-control" />
+
+    <label>Tipo Producto</label>
+    <textarea asp-for="Descripcion" class="form-control"></textarea>
+
+    <br />
+    <button class="btn btn-primary">Actualizar</button>
+</form>
+<br />
+<h3>Proveedores</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Proveedor</th>
+            <th>Clave Producto</th>
+            <th>Precio Proveedor</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prov in ViewBag.Proveedores as List<ProductoProveedor>)
+        {
+            <tr>
+                <td>@prov.NombreProveedor</td>
+                <td>@prov.ClaveProveedor</td>
+                <td>@prov.PrecioProveedor</td>
+                <td>
+                    <a class="btn btn-warning btn-sm"
+                       href="/ProductoProveedor/Editar?idProducto=@Model.Id&idProveedor=@prov.IdProveedor">
+                        Editar
+                    </a>
+                </td>
+
+                <td>
+                    <a class="btn btn-danger btn-sm"
+                       href="/ProductoProveedor/Eliminar?idProducto=@Model.Id&idProveedor=@prov.IdProveedor">
+                        X
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" action="/ProductoProveedor/Agregar">
+    <input type="hidden" name="IdProducto" value="@Model.Id" />
+    <h3>Agregar Proveedor al producto</h3>
+    <br />
+    <label>Nombre</label>
+    <select name="IdProveedor" class="form-control">
+        @foreach (var p in ViewBag.ListaProveedores)
+        {
+            <option value="@p.IdProveedor">@p.Nombre</option>
+        }
+    </select>
+
+    <label>Precio del proveedor</label>
+    <input name="PrecioProveedor" class="form-control" />
+
+    <label>Clave del proveedor</label>
+    <input name="ClaveProveedor" class="form-control" />
+
+    <button type="submit" class="btn btn-primary mt-2">Agregar Proveedor</button>
+</form>
